@@ -96,7 +96,7 @@ public class FollowAprilTag extends LinearOpMode {
             telemetry.update();
 
             // Apply desired axes motions to the drivetrain.
-            moveRobot(drive, turn);
+            moveRobot(drive, -turn);
             sleep(10);
         }
     }

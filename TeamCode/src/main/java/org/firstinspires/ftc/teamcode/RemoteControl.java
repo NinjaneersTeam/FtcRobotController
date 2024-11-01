@@ -68,24 +68,38 @@ public class RemoteControl extends LinearOpMode {
     NinjaBot robot = new NinjaBot(hardwareMap, this);
 
     double power = 1.0;
-    double servo_pos = 0.0;
+    double servo_pos = 0;
 
     waitForStart();
     runtime.reset();
 
     while (opModeIsActive()) {
 
-      double x = gamepad1.right_stick_x;
-      double y = gamepad1.right_stick_y;
+      double x = -gamepad1.right_stick_x;
+      double y = -gamepad1.right_stick_y;
 
       if (gamepad1.x) {
-        servo_pos += 0.05;
+        servo_pos += 0.05; // clockwise looking at spinny thing
       }
       if (gamepad1.a) {
         servo_pos -= 0.05;
       }
+      if (gamepad1.y) {
+        for (double i = 0; i < 1000; i+=10) {
+          robot.ladder.setPower(-squared(i)+1);
+          sleep(10);
+        }
+        robot.ladder.setPower(0);
+      }
+      if (gamepad1.b) {
+        for (double i = 0; i < 300; i+=10) {
+          robot.ladder.setPower(-squared(i)+1);
+          sleep(10);
+        }
+        robot.ladder.setPower(0);
+      }
 
-      Point circle = new Point(x, y);
+      Point circle = new Point(x, -y);
       Point uv = circleToSquare(circle);
       Point UV = uv.add(new Point(1, 1)).divide(2.0);
 
@@ -97,16 +111,16 @@ public class RemoteControl extends LinearOpMode {
       telemetry.update();
 
       // set motor power
-      robot.leftDrive.setPower(left * power );
+      robot.leftDrive.setPower(left * power);
       robot.rightDrive.setPower(right * power);
 
-      robot.ladder.setPower(-0.3 * gamepad1.left_trigger);
-      robot.ladder.setPower(0.3 * gamepad1.right_trigger);
+      robot.ladder.setPower(-1 * gamepad1.left_trigger);
+      robot.ladder.setPower(1 * gamepad1.right_trigger);
 
       robot.claw.setPosition(servo_pos);
 
       // optional (waits before continuing loop)
-      // sleep(10);
+      sleep(10);
     }
   }
 }

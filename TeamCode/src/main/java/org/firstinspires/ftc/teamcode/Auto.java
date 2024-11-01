@@ -27,6 +27,10 @@ public class Auto extends LinearOpMode {
 
     waitForStart();
 
+    robot.move(0, 1);
+    sleep(1000);
+    robot.move(0, 0);
+
     // there is not running loop, all code is executed sequentially.
     // same as remote control, but without the loop.
     // eg: robot.leftDrive.setPower(1);
