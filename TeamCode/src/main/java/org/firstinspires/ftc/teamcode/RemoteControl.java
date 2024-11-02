@@ -85,7 +85,7 @@ public class RemoteControl extends LinearOpMode {
         servo_pos -= 0.05;
       }
       if (gamepad1.y) {
-        for (double i = 0; i < 1000; i+=10) {
+        for (double i = 0; i < 300; i+=10) {
           robot.ladder.setPower(-squared(i)+1);
           sleep(10);
         }
@@ -108,14 +108,15 @@ public class RemoteControl extends LinearOpMode {
 
       telemetry.addLine(String.format("\n==== (left %f)", left));
       telemetry.addLine(String.format("\n==== (right %f)", right));
+      telemetry.addLine(String.format("\n==== (trigger left %f)", gamepad1.left_trigger));
+      telemetry.addLine(String.format("\n==== (trigger right %f)", gamepad1.right_trigger));
       telemetry.update();
 
       // set motor power
       robot.leftDrive.setPower(left * power);
       robot.rightDrive.setPower(right * power);
 
-      robot.ladder.setPower(-1 * gamepad1.left_trigger);
-      robot.ladder.setPower(1 * gamepad1.right_trigger);
+      robot.ladder.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
 
       robot.claw.setPosition(servo_pos);
 
